@@ -11,16 +11,16 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api/:date?', (req, res) => {
-  const date = req.params.date;
+  const dateParam = req.params.date;
   let unixTimestamp, utcString;
 
-  if (date) {
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) {
+  if (dateParam) {
+    unixTimestamp = parseInt(dateParam, 10);
+    if (isNaN(unixTimestamp)) {
       return res.json({ error: 'Invalid Date' });
     }
-    unixTimestamp = parsedDate.getTime();
-    utcString = parsedDate.toUTCString();
+    const dateObj = new Date(unixTimestamp);
+    utcString = dateObj.toUTCString();
   } else {
     const now = new Date();
     unixTimestamp = now.getTime();
